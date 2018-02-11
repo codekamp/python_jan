@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+
+
+{% block page_content %}
+    {% for aritcle in my_articles %}
+        <li><a href="/articles/{{ aritcle.slug }}">{{ aritcle.title | truncatechars:"8" | lower }}</a></li>
+    {% endfor %}
+{% endblock %}
+
+{% block page_title %}
+    <title>All articles</title>
+{% endblock %}

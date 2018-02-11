@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
-urlpatterns = [
-    path('profile/<int:user_id>', views.get_profile)
+my_urls = [
+    path('articles', views.list_articles),
+    path('articles/<str:my_slug>', views.get_article),
 ]

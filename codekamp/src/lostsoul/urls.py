@@ -15,12 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
 from lostsoul_web import urls
-from lostsoul_api import urls as api_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(api_urls.urlpatterns)),
-    path('', include(urls.urlpatterns)),
+    path('', include(urls.my_urls))
 ]

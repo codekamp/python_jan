@@ -1,7 +1,12 @@
 from django.shortcuts import render
 
-def get_profile(request, user_id):
-    users = [{'name': 'Amit', 'about': 'I am amit'}, {'name': 'Sumit', 'about': 'I love programming'}]
+from lostsoul_web.models import Article
 
-    user = users[user_id - 1]
-    return render(request, 'profile.html', {'users': users})
+
+def list_articles(request):
+    articles = Article.objects.all()
+    return render(request, 'list-articles.html', {'my_articles': articles})
+
+def get_article(request, my_slug):
+    article = Article.objects.get(slug=my_slug)
+    return render(request, 'get-article.html', {'article': article})
