@@ -2,9 +2,16 @@
 
 
 {% block page_content %}
-    {% for aritcle in my_articles %}
-        <li><a href="/articles/{{ aritcle.slug }}">{{ aritcle.title | truncatechars:"8" | lower }}</a></li>
-    {% endfor %}
+    <form action="{% url 'lostsoul_web:article_list' %}" method="get">
+        <input name="q" placeholder="type keywords.." value="{{ query }}">
+        <button type="submit">Search</button>
+    </form>
+    <a href="{% url 'lostsoul_web:add_new_article' %}">add new article</a>
+    <ul>
+        {% for aritcle in my_articles %}
+            <li><a href="{% url 'lostsoul_web:article_detail' aritcle.slug %}">{{ aritcle.title }}</a></li>
+        {% endfor %}
+    </ul>
 {% endblock %}
 
 {% block page_title %}
