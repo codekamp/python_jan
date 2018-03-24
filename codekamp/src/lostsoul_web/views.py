@@ -86,3 +86,25 @@ def facebook_oauth(request):
         print(res['access_token'])
 
         return redirect('lostsoul_web:add_new_article')
+
+def github_oauth(request):
+    grant = request.GET['code']
+    state = request.GET['state']
+
+    user_id = cache.get(state)
+
+    if (user_id == request.user.id):
+        client_id = '99483968851edaa50f7f'
+        client_secret = '65737905e37e46bceae4cb8d575971b57db1d0e7'
+        data = {'client_id': client_id, 'redirect_uri': 'http://localhost:8080/oauth/github',
+                'client_secret': client_secret, 'code': grant}
+
+        headers = {'Accept': 'application/json'}
+        res = requests.post(
+            'https://github.com/login/oauth/access_token', params=data, headers=headers).json()
+        request.user.facebook_token = res['access_token']
+        request.user.save()
+
+        emailRes = requests.get('https://api.github.com/user/emails?access_token=' + res['access_token'])
+        print(emailRes)
+        return redirect('lostsoul_web:add_new_article')

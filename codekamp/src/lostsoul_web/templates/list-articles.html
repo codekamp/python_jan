@@ -3,7 +3,7 @@
 
 {% block page_content %}
     <p>We are spying on you and we know you are from {{ city }}</p>
-    <a href="https://www.facebook.com/v2.12/dialog/oauth?client_id=&scope=publish_actions&redirect_uri=http://localhost:8080/oauth/facebook&state={{ state }}">Connect Your FB</a>
+    <a href="https://github.com/login/oauth/authorize?client_id=99483968851edaa50f7f&scope=user&redirect_uri=http://localhost:8080/oauth/github&state={{ state }}">Connect Your Github</a>
     <form action="{% url 'lostsoul_web:article_list' %}" method="get">
         <input name="q" placeholder="type keywords.." value="{{ query }}">
         <button type="submit">Search</button>

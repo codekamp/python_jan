@@ -1,10 +1,11 @@
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.views import View
-from rest_framework.decorators import api_view
+from rest_framework import mixins
+from rest_framework.decorators import api_view, detail_route, list_route
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.viewsets import ViewSet, ModelViewSet
+from rest_framework.viewsets import ViewSet, ModelViewSet, GenericViewSet
 
 from lostsoul_api.serialize import ArticleSerializer, DetailedArticleSerializer, UserSerializer
 
@@ -41,6 +42,17 @@ class ArticleViewSet(ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
 
-class UserViewSet(ModelViewSet):
+    @detail_route(methods=['POST'])
+    def copy(self, request, pk):
+        existing = self.queryset.get(pk=pk)
+        existing.id = None
+        existing.slug += '_2'
+        existing.save()
+        return Response({'method':existing.id})
+
+
+
+
+class UserViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
