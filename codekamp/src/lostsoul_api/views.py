@@ -1,13 +1,14 @@
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.views import View
+from pip._vendor import requests
 from rest_framework import mixins
 from rest_framework.decorators import api_view, detail_route, list_route
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet, ModelViewSet, GenericViewSet
 
-from lostsoul_api.serialize import ArticleSerializer, DetailedArticleSerializer, UserSerializer
+from lostsoul_api.serialize import ArticleSerializer, DetailedArticleSerializer, UserSerializer, YouTubeSerializer
 
 from lostsoul_web.models import Article
 
@@ -40,7 +41,20 @@ from lostsoul_web.models import Article
 
 class ArticleViewSet(ModelViewSet):
     queryset = Article.objects.all()
-    serializer_class = ArticleSerializer
+
+    def get_serializer_class(self):
+        if(self.action == 'list'):
+            return ArticleSerializer
+        else:
+            return DetailedArticleSerializer
+    #
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     if(user.isAdmin()):
+    #         return self.queryset
+    #     else:
+    #         return self.queryset.filter(author=user)
+
 
     @detail_route(methods=['POST'])
     def copy(self, request, pk):
@@ -56,3 +70,12 @@ class ArticleViewSet(ModelViewSet):
 class UserViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+class YouTubeApiView(APIView):
+    def get(self, request, query):
+        data = {"key": "AIzaSyBmdVLdL9w8ah-UUEar6pQmh4GjW5JMQlI", "part": "snippet", "q": query, format: "json"}
+
+        res = requests.get("https://www.googleapis.com/youtube/v3/search", params=data).json()
+
+        output = YouTubeSerializer(res['items'], many=True).data
+        return Response(output)
