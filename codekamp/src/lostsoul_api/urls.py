@@ -18,7 +18,8 @@ urlpatterns = [
     # path('articles/<int:id>/copy', views.article_detail, name='article_detail'),
     path('articles', views.ArticleView.as_view(), name='article_detail'),
     path('youtube/search/<str:query>', views.YouTubeApiView.as_view(), name='youtube_search'),
-    path('authenticate', rfviews.obtain_auth_token)
+    path('authenticate', rfviews.obtain_auth_token),
+    path('counter', views.get_counter)
 ]
 
 urlpatterns += router.urls

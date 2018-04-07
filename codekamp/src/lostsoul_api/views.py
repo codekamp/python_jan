@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.http import HttpResponse
 from django.views import View
 from pip._vendor import requests
@@ -82,3 +83,8 @@ class YouTubeApiView(APIView):
 
         output = YouTubeSerializer(res['items'], many=True).data
         return Response(output)
+
+@api_view()
+def get_counter(request):
+    counter  = cache.get("counter", 0)
+    return Response({"counter": counter})
