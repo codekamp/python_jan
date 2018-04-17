@@ -1,10 +1,16 @@
 from django.core.management import BaseCommand
 
+from lostsoul_api.tasks import analyze_tweet
+
 
 class Command(BaseCommand):
 
     def pollFacebook(self):
         print("polling facebook")
+
+    def pollTwitter(self):
+        analyze_tweet.delay(11)
+        analyze_tweet.apply_async((99,), countdown=10)
 
     # def add_arguments(self, parser):
     #     parser.add_argument('parent_id', type=int)
@@ -18,6 +24,7 @@ class Command(BaseCommand):
         # print(options["something"])
         # print(options["anything"])
         self.pollFacebook()
+        self.pollTwitter()
 
 
 # https://github.com/conversationai/perspectiveapi/blob/master/quickstart.md

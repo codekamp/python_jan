@@ -15,6 +15,9 @@ def list_articles(request):
     print(request.user.id)
     cache.set(state, request.user.id, 6000)
 
+
+    requests.post("https://api.twitter.com/oauth/request_token")
+
     # ip_addr = request.META.get('REMOTE_ADDR')
     # ip_addr = '43.225.0.133'
     #
